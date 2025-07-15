@@ -36,6 +36,7 @@
     "test:oracledb": "cross-env DB=oracledb npm run test:db",
     "test:sqlite": "cross-env DB=sqlite3 npm run test:db",
     "test:better-sqlite3": "cross-env DB=better-sqlite3 npm run test:db",
+    "test:node-sqlite": "cross-env DB=node-sqlite npm run test:db",
     "test:postgres": "cross-env DB=postgres npm run test:db",
     "test:cockroachdb": "cross-env DB=cockroachdb npm run test:db",
     "test:pgnative": "cross-env DB=pgnative npm run test:db",

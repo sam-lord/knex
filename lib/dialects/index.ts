@@ -6,6 +6,7 @@ const dbNameToDialectLoader: Record<string, () => any> = Object.freeze({
   mssql: () => require('./mssql'),
   mysql: () => require('./mysql'),
   mysql2: () => require('./mysql2'),
+  'node-sqlite': () => require('./node-sqlite'),
   oracle: () => require('./oracle'),
   oracledb: () => require('./oracledb'),
   pgnative: () => require('./pgnative'),

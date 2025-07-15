@@ -13,6 +13,7 @@ const Db = {
   Oracle: 'oracledb',
   CockroachDB: 'cockroachdb',
   BetterSqlite3: 'better-sqlite3',
+  NodeSqlite: 'node-sqlite',
 };
 
 const defaultDbs = [
@@ -24,6 +25,7 @@ const defaultDbs = [
   Db.MSSQL,
   Db.CockroachDB,
   Db.BetterSqlite3,
+  Db.NodeSqlite,
 ];
 
 function getAllDbs() {
@@ -42,6 +44,20 @@ const poolSqlite = {
   acquireTimeoutMillis: 1000,
   afterCreate: function (connection, callback) {
     connection.run('PRAGMA foreign_keys = ON', callback);
+  },
+};
+
+const poolNodeSqlite = {
+  min: 0,
+  max: 1,
+  acquireTimeoutMillis: 1000,
+  afterCreate: function (connection, callback) {
+    try {
+      connection.prepare('PRAGMA foreign_keys = ON').run();
+      callback(null, connection);
+    } catch (err) {
+      callback(err, connection);
+    }
   },
 };
 
@@ -163,6 +179,15 @@ const testConfigs = {
     pool: poolBetterSqlite,
     migrations,
     seeds,
+  },
+
+  'node-sqlite': {
+    client: 'node-sqlite',
+    connection: testConfig.sqlite3 || ':memory:',
+    pool: poolNodeSqlite,
+    migrations,
+    seeds,
+    useNullAsDefault: true,
   },
 
   mssql: {

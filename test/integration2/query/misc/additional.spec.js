@@ -369,6 +369,8 @@ describe('Additional', function () {
               "SELECT name FROM sqlite_master WHERE type='table';",
             [drivers.SQLite]:
               "SELECT name FROM sqlite_master WHERE type='table';",
+            [drivers.NodeSQLite]:
+              "SELECT name FROM sqlite_master WHERE type='table';",
             [drivers.Oracle]: 'select TABLE_NAME from USER_TABLES',
             [drivers.MsSQL]:
               "SELECT table_name FROM INFORMATION_SCHEMA.TABLES WHERE table_schema='dbo'",
@@ -405,6 +407,8 @@ describe('Additional', function () {
               "(lower(hex(randomblob(4))) || '-' || lower(hex(randomblob(2))) || '-4' || substr(lower(hex(randomblob(2))),2) || '-' || substr('89ab',abs(random()) % 4 + 1, 1) || substr(lower(hex(randomblob(2))),2) || '-' || lower(hex(randomblob(6))))",
             [drivers.CockroachDB]: '(gen_random_uuid())',
             [drivers.BetterSQLite3]:
+              "(lower(hex(randomblob(4))) || '-' || lower(hex(randomblob(2))) || '-4' || substr(lower(hex(randomblob(2))),2) || '-' || substr('89ab',abs(random()) % 4 + 1, 1) || substr(lower(hex(randomblob(2))),2) || '-' || lower(hex(randomblob(6))))",
+            [drivers.NodeSQLite]:
               "(lower(hex(randomblob(4))) || '-' || lower(hex(randomblob(2))) || '-4' || substr(lower(hex(randomblob(2))),2) || '-' || substr('89ab',abs(random()) % 4 + 1, 1) || substr(lower(hex(randomblob(2))),2) || '-' || lower(hex(randomblob(6))))",
           };
 

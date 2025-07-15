@@ -2757,6 +2757,7 @@ declare namespace Knex {
     | MySqlConnectionConfig
     | MySql2ConnectionConfig
     | MsSqlConnectionConfig
+    | NodeSqliteConnectionConfig
     | OracleDbConnectionConfig
     | PgConnectionConfig
     | RedshiftConnectionConfig
@@ -3082,6 +3083,14 @@ declare namespace Knex {
     options?: {
       nativeBinding?: string;
       readonly?: boolean;
+    };
+  }
+
+  /** Used with Node.js native SQLite adapter */
+  interface NodeSqliteConnectionConfig {
+    filename: string;
+    options?: {
+      [key: string]: any;
     };
   }
 
