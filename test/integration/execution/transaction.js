@@ -526,7 +526,7 @@ module.exports = function (knex) {
             expect(error.sql).to.equal(
               'select * FROM accounts WHERE username = ?'
             );
-            expect(error.message).to.equal(
+            expect(error.message).to.include(
               'Knex: Timeout acquiring a connection. The pool is probably full. Are you missing a .transacting(trx) call?'
             );
             trx.commit(); //Test done

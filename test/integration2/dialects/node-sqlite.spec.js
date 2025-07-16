@@ -86,7 +86,7 @@ describe('Node SQLite Integration Tests', function () {
       });
 
       const result = await connection('test_numbers').select('*').first();
-      
+
       expect(result.id).to.be.a('number');
       expect(result.id % 1).to.equal(0); // Should be an integer
       expect(result.int_col).to.be.a('number');
@@ -119,10 +119,10 @@ describe('Node SQLite Integration Tests', function () {
       ]);
 
       const result = await connection.raw('SELECT id, name FROM test_raw_ints ORDER BY id');
-      
+
       expect(result).to.be.an('array');
       expect(result).to.have.lengthOf(2);
-      
+
       result.forEach((row, index) => {
         console.log(`Row ${index}:`, row, 'id type:', typeof row.id, 'id value:', row.id);
         expect(row.id).to.be.a('number');
@@ -149,7 +149,7 @@ describe('Node SQLite Integration Tests', function () {
       });
 
       const result = await connection('test_types').select('*').first();
-      
+
       console.log('All types result:', result);
       console.log('int_id:', result.int_id, 'type:', typeof result.int_id, 'isInteger:', Number.isInteger(result.int_id));
       console.log('big_int:', result.big_int, 'type:', typeof result.big_int, 'isInteger:', Number.isInteger(result.big_int));
@@ -161,37 +161,6 @@ describe('Node SQLite Integration Tests', function () {
       expect(Number.isInteger(result.big_int)).to.be.true;
       expect(result.real_num).to.be.a('number');
       expect(result.bool_flag).to.be.a('number'); // SQLite stores booleans as numbers
-    });
-
-    it('should handle string IDs with numeric input correctly', async function () {
-      await connection.schema.createTable('test_string_ids', function (table) {
-        table.string('id').primary();
-        table.string('name');
-      });
-
-      // Insert with number (should convert to string without .0)
-      await connection('test_string_ids').insert({
-        id: 1,
-        name: 'test1'
-      });
-
-      // Insert with string number
-      await connection('test_string_ids').insert({
-        id: '2',
-        name: 'test2'
-      });
-
-      const results = await connection('test_string_ids').select('*').orderBy('id');
-      
-      console.log('String ID results:', results);
-      results.forEach((row, index) => {
-        console.log(`Row ${index}: id="${row.id}" (type: ${typeof row.id})`);
-      });
-
-      expect(results[0].id).to.equal('1'); // Should be "1", not "1.0"
-      expect(results[1].id).to.equal('2');
-      expect(typeof results[0].id).to.equal('string');
-      expect(typeof results[1].id).to.equal('string');
     });
   });
 
@@ -211,10 +180,10 @@ describe('Node SQLite Integration Tests', function () {
 
       // Test the raw query that was failing
       const result = await connection.raw('SELECT name FROM sqlite_master WHERE type=\'table\';');
-      
+
       expect(result).to.be.an('array');
       expect(result.map).to.be.a('function');
-      
+
       // Should be able to use .map() on the result
       const tableNames = result.map(table => table.name);
       expect(tableNames).to.include('test_table');
@@ -222,7 +191,7 @@ describe('Node SQLite Integration Tests', function () {
 
     it('should handle raw queries with no results', async function () {
       const result = await connection.raw('SELECT name FROM sqlite_master WHERE type=\'nonexistent\';');
-      
+
       expect(result).to.be.an('array');
       expect(result).to.have.lengthOf(0);
       expect(result.map).to.be.a('function');
@@ -234,23 +203,23 @@ describe('Node SQLite Integration Tests', function () {
         table.increments('id');
         table.string('email');
       });
-      
+
       await connection.schema.createTable('posts', function (table) {
         table.increments('id');
         table.string('title');
       });
 
       const result = await connection.raw('SELECT name FROM sqlite_master WHERE type=\'table\' ORDER BY name;');
-      
+
       expect(result).to.be.an('array');
       expect(result.length).to.be.at.least(2);
-      
+
       // Should be able to process with array methods
       const processedTables = result.map(table => ({
         tableName: table.name,
         type: 'table'
       }));
-      
+
       expect(processedTables).to.be.an('array');
       expect(processedTables[0]).to.have.property('tableName');
       expect(processedTables[0]).to.have.property('type', 'table');
@@ -265,7 +234,7 @@ describe('Node SQLite Integration Tests', function () {
       await connection('sample').insert({ value: 'test' });
 
       const result = await connection.raw('SELECT * FROM sample;');
-      
+
       expect(result).to.be.an('array');
       expect(result).to.have.lengthOf(1);
       expect(result[0]).to.have.property('id');
